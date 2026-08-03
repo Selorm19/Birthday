@@ -1,0 +1,6 @@
+image 1.jpg	Lockscreen profile picture avatar
+image 2.jpg	Passkey reveal selfie (inside modal)
+image 3.gif	Thinking Panda GIF (Loading screen)
+image 4.gif	Sleeping Panda GIF (Special Day screen)
+image 5.gif	Happy Panda GIF (Age counter screen)
+image 6.jpg	Carousel photo 1
