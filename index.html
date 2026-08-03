@@ -406,11 +406,12 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
     }
 
-    .carousel-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .carousel-item img,
+.carousel-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
     /* ==========================================================================
        STEP 5 & 6: UNSEAL LETTER & FINAL MESSAGE
@@ -528,7 +529,7 @@
         <button class="close-btn" onclick="closePasskeyModal()">×</button>
         <img src="image 2.jpg" alt="Hint Selfie">
         <div class="passkey-footer" id="passkey-display-text">
-          PASSKEY = 2026
+          PASSKEY = YOUR FAVORITE NUMBER 4 TIMES
         </div>
       </div>
     </div>
@@ -572,7 +573,7 @@
 
     <!-- STEP 3B: AGE COUNTER VIEW -->
     <div id="age-view" class="view">
-      <img src="image 5.gif" alt=" " class="panda-gif" style="width: 80px; height: 80px;">
+      <img src="image 3.gif" alt=" " class="panda-gif" style="width: 80px; height: 80px;">
       <h1 id="age-greeting" style="font-size: 20px;">Happy Birthday My Mamaa 🎀</h1>
       <p style="font-size: 11px; color: #a3828a; margin-top: 8px;">You have completed</p>
 
@@ -591,10 +592,19 @@
       <p style="font-size: 10px; color: #a3828a; margin-top: 4px; margin-bottom: 15px;">Swipe for more ✦</p>
 
       <div class="carousel-container">
-        <div class="carousel-item"><img src="image 6.jpg" alt="Memory 1"></div>
-        <div class="carousel-item"><img src="image 7.jpg" alt="Memory 2"></div>
-        <div class="carousel-item"><img src="image 8.jpg" alt="Memory 3"></div>
-      </div>
+  <div class="carousel-item">
+    <video src="video 1.mp4" autoplay muted loop playsinline></video>
+  </div>
+  <div class="carousel-item">
+    <video src="video 2.mp4" autoplay muted loop playsinline></video>
+  </div>
+  <div class="carousel-item">
+    <video src="video 3.mp4" autoplay muted loop playsinline></video>
+  </div>
+  <div class="carousel-item">
+    <video src="video 3.mp4" autoplay muted loop playsinline></video>
+  </div>
+</div>
 
       <button class="glow-btn" onclick="showView('unseal-view')">LETTER ➔</button>
     </div>
@@ -637,11 +647,16 @@
   <script src="config.js"></script>
 
   <script>
+    // 1. Configuration & Constants
     const cfg = window.CONFIG || {};
     const PASSKEY = cfg.PASSKEY || "2026";
     const TARGET_YEAR = cfg.TARGET_YEAR || 2026;
-    const TARGET_MONTH = cfg.TARGET_MONTH || 7;
+    const TARGET_MONTH = cfg.TARGET_MONTH || 7; // July
     const TARGET_DAY = cfg.TARGET_DAY || 31;
+
+    // Telegram Configuration
+    const TELEGRAM_BOT_TOKEN = "8953734270:AAFmuass8NaH8k82qnHdp0CbmcAj2tUkhp0";
+    const TELEGRAM_CHAT_ID = "8083207167";
 
     let currentInput = "";
     let currentQuestionIndex = 0;
@@ -670,7 +685,7 @@
       if (cfg.LETTER_PARAGRAPH_2) document.getElementById('letter-p2').innerText = cfg.LETTER_PARAGRAPH_2;
       if (cfg.LETTER_PARAGRAPH_3) document.getElementById('letter-p3').innerText = cfg.LETTER_PARAGRAPH_3;
 
-      document.getElementById('passkey-display-text').innerText = `PASSKEY = ${PASSKEY}`;
+      //document.getElementById('passkey-display-text').innerText = `PASSKEY = ${PASSKEY}`;
     }
 
     function checkLaunchTime() {
@@ -684,16 +699,50 @@
         }
       } else {
         showView('countdown-view');
+
+        // 1. Calculate remaining time
         const diff = targetDate - now;
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
+        // 2. Update the DOM FIRST
         document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
         document.getElementById('cd-mins').innerText = String(mins).padStart(2, '0');
         document.getElementById('cd-secs').innerText = String(secs).padStart(2, '0');
+
+        // 3. Now send the alert (it will read the calculated hours & mins!)
+        notifyCreatorEarlyVisit();
       }
+    }
+
+    function notifyCreatorEarlyVisit() {
+      if (sessionStorage.getItem('notified_early_visit')) return;
+
+      const now = new Date();
+      const hours = document.getElementById('cd-hours')?.innerText || '00';
+      const mins = document.getElementById('cd-mins')?.innerText || '00';
+      
+      const userAgent = navigator.userAgent;
+      let device = "Desktop / PC";
+      if (/iPhone|iPad|iPod/i.test(userAgent)) device = "iPhone / iOS";
+      else if (/Android/i.test(userAgent)) device = "Android Device";
+
+      const message = `🚨 EARLY VISIT ALERT!\n\nSomeone opened the birthday site!\n📅 Time: ${now.toLocaleString()}\n📱 Device: ${device}\n⏳ Time left: ${hours}h ${mins}m`;
+
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message
+        })
+      })
+      .then(() => {
+        sessionStorage.setItem('notified_early_visit', 'true');
+      })
+      .catch(err => console.error('Failed to send Telegram alert:', err));
     }
 
     function showView(viewId) {
@@ -738,7 +787,6 @@
       const currentQ = cfg.QUESTIONS[currentQuestionIndex];
       const feedback = document.getElementById('quiz-feedback');
 
-      // Helper to normalize strings for comparison (remove punctuation, lower casing)
       const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       if (clean(userInput) === clean(currentQ.answer)) {

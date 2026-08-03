@@ -1,21 +1,21 @@
 window.CONFIG = {
   // Passkey for lockscreen
-  PASSKEY: "2026",
+  PASSKEY: "8888",
 
   // Target Birthday Unlock Date & Time
   TARGET_YEAR: 2026,
-  TARGET_MONTH: 8, // 1 = Jan, 7 = July, etc.
+  TARGET_MONTH: 7, // 1 = Jan, 7 = July, etc.
   TARGET_DAY: 31,
 
   // Person's Birth Details (for exact age calculation)
-  BIRTH_YEAR: 2007,
-  BIRTH_MONTH: 7,
-  BIRTH_DAY: 31,
+  BIRTH_YEAR: 2001,
+  BIRTH_MONTH: 8,
+  BIRTH_DAY: 8,
 
   // Header Titles & Greetings
   PAGE_TITLE: "It's Your Special Day",
   AGE_TITLE: "Happy Birthday My Girl 🎀",
-  RECIPIENT_NAME: "Love",
+  RECIPIENT_NAME: "Gladys Amorkor Commey",
 
   // Pre-Launch Countdown / Early Visitor Message
   COUNTDOWN_TITLE: "HOLD ON A SECOND! 🛑",
@@ -32,7 +32,7 @@ window.CONFIG = {
   QUESTIONS: [
     {
       question: "We aren't just starting, and we aren't at the end either. Can you guess how many years I’ve called you my friend?",
-      answer: "16 years",
+      answer: "14 years",
       hint: "Think back to when we first met!"
     },
     {
