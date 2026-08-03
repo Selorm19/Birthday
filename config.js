@@ -4,7 +4,7 @@ window.CONFIG = {
 
   // Target Birthday Unlock Date & Time
   TARGET_YEAR: 2026,
-  TARGET_MONTH: 7, // 1 = Jan, 7 = July, etc.
+  TARGET_MONTH: 8, // 1 = Jan, 7 = July, etc.
   TARGET_DAY: 31,
 
   // Person's Birth Details (for exact age calculation)
