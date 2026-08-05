@@ -20,7 +20,7 @@ window.CONFIG = {
   // Pre-Launch Countdown / Early Visitor Message
   COUNTDOWN_TITLE: "HOLD ON A SECOND! 🛑",
   WAIT_MESSAGE: "Why are you in such a big rush? 👀 It's not your birthday just yet! Because You couldn't wait the website will delete its self SORRY you will to wait for next year or Contact Junior.",
-  WAIT_SUBTEXT: "Patience is a virtue... but here is your exact wait time to contact Junior to tell you what to do before the website deletes its self:",
+  WAIT_SUBTEXT: "Patience is a virtue... but here is your exact time to contact Junior to tell you what to do before the website deletes its self:",
 
   // Final Letter Content
   LETTER_HEADING: "Happy Birthday, Love ❤️",
