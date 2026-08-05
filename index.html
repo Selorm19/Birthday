@@ -407,11 +407,11 @@
     }
 
     .carousel-item img,
-.carousel-item video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .carousel-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     /* ==========================================================================
        STEP 5 & 6: UNSEAL LETTER & FINAL MESSAGE
@@ -592,19 +592,16 @@
       <p style="font-size: 10px; color: #a3828a; margin-top: 4px; margin-bottom: 15px;">Swipe for more ✦</p>
 
       <div class="carousel-container">
-  <div class="carousel-item">
-    <video src="video 1.mp4" autoplay muted loop playsinline></video>
-  </div>
-  <div class="carousel-item">
-    <video src="video 2.mp4" autoplay muted loop playsinline></video>
-  </div>
-  <div class="carousel-item">
-    <video src="video 3.mp4" autoplay muted loop playsinline></video>
-  </div>
-  <div class="carousel-item">
-    <video src="video 3.mp4" autoplay muted loop playsinline></video>
-  </div>
-</div>
+        <div class="carousel-item">
+          <video src="video 1.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="carousel-item">
+          <video src="video 2.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="carousel-item">
+          <video src="video 3.mp4" autoplay muted loop playsinline></video>
+        </div>
+      </div>
 
       <button class="glow-btn" onclick="showView('unseal-view')">LETTER ➔</button>
     </div>
@@ -684,8 +681,6 @@
       if (cfg.LETTER_PARAGRAPH_1) document.getElementById('letter-p1').innerText = cfg.LETTER_PARAGRAPH_1;
       if (cfg.LETTER_PARAGRAPH_2) document.getElementById('letter-p2').innerText = cfg.LETTER_PARAGRAPH_2;
       if (cfg.LETTER_PARAGRAPH_3) document.getElementById('letter-p3').innerText = cfg.LETTER_PARAGRAPH_3;
-
-      //document.getElementById('passkey-display-text').innerText = `PASSKEY = ${PASSKEY}`;
     }
 
     function checkLaunchTime() {
@@ -712,7 +707,7 @@
         document.getElementById('cd-mins').innerText = String(mins).padStart(2, '0');
         document.getElementById('cd-secs').innerText = String(secs).padStart(2, '0');
 
-        // 3. Now send the alert (it will read the calculated hours & mins!)
+        // 3. Send early visit alert to Telegram
         notifyCreatorEarlyVisit();
       }
     }
@@ -743,6 +738,26 @@
         sessionStorage.setItem('notified_early_visit', 'true');
       })
       .catch(err => console.error('Failed to send Telegram alert:', err));
+    }
+
+    function sendQuizAnswerToTelegram(question, answer, isCorrect = true) {
+      const status = isCorrect ? "✅ Correct Answer" : "❌ Wrong Attempt";
+      const now = new Date();
+
+      const message = `🧩 QUIZ RESPONSE!\n\n` +
+                      `📌 Status: ${status}\n` +
+                      `❓ Question: ${question}\n` +
+                      `💬 Her Input: "${answer}"\n` +
+                      `📅 Time: ${now.toLocaleString()}`;
+
+      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message
+        })
+      }).catch(err => console.error('Failed to send quiz Telegram notification:', err));
     }
 
     function showView(viewId) {
@@ -787,11 +802,17 @@
       const currentQ = cfg.QUESTIONS[currentQuestionIndex];
       const feedback = document.getElementById('quiz-feedback');
 
+      if (!userInput) return;
+
       const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       if (clean(userInput) === clean(currentQ.answer)) {
         feedback.innerText = "Correct! ❤️";
         feedback.className = "quiz-feedback success";
+
+        // Send correct answer to Telegram
+        sendQuizAnswerToTelegram(currentQ.question, userInput, true);
+
         setTimeout(() => {
           currentQuestionIndex++;
           if (currentQuestionIndex < cfg.QUESTIONS.length) {
@@ -803,6 +824,9 @@
       } else {
         feedback.innerText = "Not quite, try again! 🤫";
         feedback.className = "quiz-feedback error";
+
+        // Send wrong attempt to Telegram
+        sendQuizAnswerToTelegram(currentQ.question, userInput, false);
       }
     }
 
