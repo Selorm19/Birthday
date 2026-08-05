@@ -4,7 +4,7 @@ window.CONFIG = {
 
   // Target Birthday Unlock Date & Time
   TARGET_YEAR: 2026,
-  TARGET_MONTH: 7, // 1 = Jan, 7 = July, etc.
+  TARGET_MONTH: 8, // 1 = Jan, 7 = July, etc.
   TARGET_DAY: 8,
 
   // Person's Birth Details (for exact age calculation)
@@ -26,7 +26,7 @@ window.CONFIG = {
   LETTER_HEADING: "Happy Birthday, Love ❤️",
   LETTER_PARAGRAPH_1: "You are the most beautiful part of my life, and I'm so lucky to have you. Your smile makes my days better, and your presence makes everything feel special. I'm very happy we found our way back to each other after the detour we took, it was quite long but worth it. It made us both realized what we really wanted.",
   LETTER_PARAGRAPH_2: "I hope your birthday is filled with happiness, endless love, and all the things that make you smile!",
-  LETTER_PARAGRAPH_3: "I really hope this year is the start of something special for you and maybe for us who knows..... Last but not the least we will be starting a new tradition. I know how much you love Flowers so you will get 🌹 this year, 🌹🌹 next year, 🌹🌹🌹 the following and so on as a reminder on how far we've come and will be going. Hope this puts a smile on your face. Will come pick you with the 🌹 at 7:30 PM..... PS.. No Orphan Drressing..",
+  LETTER_PARAGRAPH_3: "I really hope this year is the start of something special for you and maybe for us who knows..... Last but not the least we will be starting a new tradition. I know how much you love Flowers so you will get 🌹 this year, 🌹🌹 next year, 🌹🌹🌹 the following and so on as a reminder on how far we've come and will be going. Hope this puts a smile on your face. Will come pick you with the 🌹 at 7:30 PM..... PS.. No Orphan Drressing.. I LOVE YOU",
 
   // Trivia Quiz Questions
   QUESTIONS: [
